@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Мой Олимп — навигатор возвращения к себе</title>
+    <style>
+        :root {
+            --bg: #f9f7f3;
+            --card: #ffffff;
+            --primary: #4a7c96;
+            --primary-light: #e6f0f5;
+            --accent: #c4946c;
+            --accent-light: #fdf7f0;
+            --gold: #c9a84e;
+            --gold-light: #fdf8ed;
+            --text: #3a3a3a;
+            --text-light: #7a7a7a;
+            --border: #e8e4dd;
+            --shadow: 0 2px 16px rgba(60,40,30,0.06);
+            --shadow-lg: 0 8px 32px rgba(60,40,30,0.1);
+            --green: #7a9a7e;
+            --green-bg: #edf5ee;
+            --amber: #c9a96e;
+            --amber-bg: #fdf7ed;
+            --teal: #6b9a8e;
+            --teal-bg: #eef5f3;
+            --purple: #8b7fad;
+            --purple-bg: #f6f4fa;
+            --pink: #c47a9a;
+            --pink-bg: #fdf0f6;
+            --radius: 18px;
+            --radius-sm: 12px;
+            --radius-xs: 8px;
+            --font-stack: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:var(--font-stack);background:var(--bg);color:var(--text);
+            line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;
+            -webkit-tap-highlight-color:transparent;display:flex;justify-content:center;
+        }
+        .app-wrapper{
+            width:100%;max-width:600px;min-height:100vh;background:var(--bg);position:relative;
+        }
+        @media(min-width:640px){
+            .app-wrapper{
+                margin:20px auto;min-height:calc(100vh - 40px);border-radius:24px;
+                box-shadow:var(--shadow-lg);background:#fafaf8;
+            }
+            body{background:#f0ece6}
+        }
+        .container{padding:16px 20px 40px}
+        @media(min-width:640px){.container{padding:24px 32px 60px}}
+        h1{font-size:22px;font-weight:700;color:var(--primary);margin-bottom:4px;letter-spacing:-0.3px}
+        h2{font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-0.2px}
+        h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+        @media(min-width:640px){h1{font-size:26px}h2{font-size:20px}h3{font-size:16px}}
+        .card{
+            background:var(--card);border-radius:var(--radius);padding:18px 16px;
+            margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--border);
+        }
+        @media(min-width:640px){.card{padding:24px 22px;margin-bottom:16px;border-radius:20px}}
+        .btn{
+            display:inline-flex;align-items:center;justify-content:center;padding:13px 24px;
+            border-radius:28px;border:none;font-size:15px;font-weight:600;cursor:pointer;
+            transition:all 0.2s ease;text-decoration:none;font-family:var(--font-stack);
+            letter-spacing:0.2px;-webkit-tap-highlight-color:transparent;
+            touch-action:manipulation;min-height:48px;
+        }
+        .btn:active{transform:scale(0.97)}
+        .btn-primary{background:var(--primary);color:#fff;width:100%}
+        .btn-primary:hover{background:#3d6b83}
+        .btn-secondary{background:var(--primary-light);color:var(--primary);width:100%}
+        .btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+        .btn-accent{background:var(--accent);color:#fff;width:100%}
+        .btn-gold{background:var(--gold);color:#fff}
+        .btn-teal{background:var(--teal);color:#fff}
+        .btn-sm{padding:8px 16px;font-size:13px;border-radius:20px;min-height:38px}
+        .btn-block{width:100%;margin-bottom:8px}
+        .btn-icon{width:48px;height:48px;border-radius:50%;padding:0;font-size:22px}
+        label{
+            display:block;font-size:13px;font-weight:600;color:var(--text-light);
+            margin-bottom:6px;margin-top:14px;letter-spacing:0.5px;text-transform:uppercase;
+        }
+        input[type="text"],textarea{
+            width:100%;padding:13px 15px;border:2px solid var(--border);
+            border-radius:var(--radius-sm);font-size:15px;font-family:var(--font-stack);
+            background:#fafaf9;transition:border 0.2s,box-shadow 0.2s;resize:vertical;
+            color:var(--text);-webkit-appearance:none;
+        }
+        input[type="text"]:focus,textarea:focus{
+            outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(74,124,150,0.1);background:#fff;
+        }
+        textarea{min-height:60px}
+        @media(min-width:640px){textarea{min-height:80px;font-size:16px}input[type="text"]{font-size:16px}}
+        .scale-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
+        .scale-btn{
+            width:38px;height:38px;border-radius:50%;border:2px solid var(--border);
+            background:#fff;font-size:14px;font-weight:600;cursor:pointer;
+            transition:all 0.15s;color:var(--text);font-family:var(--font-stack);
+            -webkit-tap-highlight-color:transparent;
+        }
+        .scale-btn:hover{border-color:var(--primary);background:var(--primary-light)}
+        .scale-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.1)}
+        @media(min-width:640px){.scale-btn{width:42px;height:42px;font-size:15px}}
+        .intensity-row{display:flex;gap:8px;align-items:center;margin:4px 0 0 0}
+        .intensity-dot{
+            width:20px;height:20px;border-radius:50%;border:2px solid var(--border);
+            background:#fafaf9;cursor:pointer;transition:all 0.15s;
+        }
+        .intensity-dot:hover{border-color:var(--primary)}
+        .intensity-dot.active{background:var(--accent);border-color:var(--accent)}
+        .intensity-label{font-size:10px;color:var(--text-light);margin-left:4px}
+        .feelings-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+        .feeling-chip{
+            padding:8px 14px;border-radius:20px;border:2px solid var(--border);
+            background:#fff;font-size:13px;cursor:pointer;transition:all 0.15s;
+            font-family:var(--font-stack);color:var(--text);-webkit-tap-highlight-color:transparent;
+            user-select:none;display:flex;align-items:center;gap:6px;
+        }
+        .feeling-chip:hover{border-color:var(--primary);background:#f8fafb}
+        .feeling-chip.selected{background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:600}
+        .feeling-chip .intensity-indicator{display:none;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+        .feeling-chip.selected .intensity-indicator{display:inline-block}
+        @media(min-width:640px){.feeling-chip{padding:10px 16px;font-size:14px;border-radius:22px}}
+        .track-options{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+        .track-card{
+            background:#fff;border:2px solid var(--border);border-radius:var(--radius);
+            padding:14px 16px;cursor:pointer;transition:all 0.2s;text-align:left;
+            font-family:var(--font-stack);color:var(--text);-webkit-tap-highlight-color:transparent;
+            display:flex;align-items:center;gap:12px;width:100%;
+        }
+        .track-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(74,124,150,0.08)}
+        .track-card.selected{border-color:var(--primary);background:var(--primary-light)}
+        .track-icon{font-size:28px;flex-shrink:0}
+        .track-title{font-weight:600;font-size:14px}
+        .track-desc{font-size:11px;color:var(--text-light)}
+        @media(min-width:640px){.track-card{padding:16px 18px}.track-title{font-size:15px}}
+        .tempo-options{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+        .tempo-card{
+            background:#fff;border:2px solid var(--border);border-radius:var(--radius);
+            padding:18px;cursor:pointer;transition:all 0.2s;text-align:left;
+            font-family:var(--font-stack);color:var(--text);-webkit-tap-highlight-color:transparent;
+            display:block;width:100%;
+        }
+        .tempo-card:hover{border-color:var(--primary);box-shadow:0 4px 16px rgba(74,124,150,0.1)}
+        .tempo-card.selected{border-color:var(--primary);background:var(--primary-light)}
+        .tempo-icon{font-size:32px;margin-bottom:4px;display:block}
+        .tempo-title{font-weight:700;font-size:16px;margin-bottom:2px}
+        .tempo-desc{font-size:13px;color:var(--text-light);line-height:1.4}
+        .container-box{
+            background:var(--accent-light);border:2px solid #e8d5c0;
+            border-radius:var(--radius);padding:18px;margin:12px 0;
+        }
+        .container-box h4{font-size:16px;margin-bottom:6px;color:var(--accent)}
+        .container-box p{font-size:14px;color:#6b5b4e;margin-bottom:6px;line-height:1.5}
+        .container-box .note{font-style:italic;font-size:13px;color:#8a7a6a}
+        .badge{display:inline-block;padding:4px 12px;border-radius:14px;font-size:12px;font-weight:600}
+        .badge-green{background:var(--green-bg);color:var(--green)}
+        .badge-amber{background:var(--amber-bg);color:var(--amber)}
+        .badge-primary{background:var(--primary-light);color:var(--primary)}
+        .badge-teal{background:var(--teal-bg);color:var(--teal)}
+        .badge-gold{background:var(--gold-light);color:var(--gold)}
+        .progress-bar{width:100%;height:8px;background:#e8e4dd;border-radius:4px;margin:8px 0;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--gold));border-radius:4px;transition:width 0.5s ease}
+        .progress-stats{display:flex;justify-content:space-between;font-size:12px;color:var(--text-light)}
+        .grow-progress{display:flex;gap:6px;margin-bottom:16px;justify-content:center}
+        .grow-dot{width:12px;height:12px;border-radius:50%;background:#e8e4dd;transition:all 0.3s}
+        .grow-dot.active{background:var(--primary)}
+        .grow-dot.done{background:var(--green)}
+        .trail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+        .trail-wanderer{
+            width:52px;height:52px;border-radius:50%;background:var(--gold-light);
+            display:flex;align-items:center;justify-content:center;font-size:28px;
+            flex-shrink:0;border:2px solid var(--gold);
+        }
+        @media(min-width:640px){.trail-wanderer{width:62px;height:62px;font-size:34px}}
+        .trail-info{flex:1}
+        .trail-name{font-weight:700;font-size:17px}
+        .trail-goal{font-size:12px;color:var(--text-light);line-height:1.3;margin-top:2px}
+        .trail-compass{font-size:11px;color:var(--accent);margin-top:3px}
+        .trail-track{font-size:11px;color:var(--gold);margin-top:2px;font-weight:500}
+        .steps-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:16px 0}
+        @media(min-width:640px){.steps-grid{gap:8px}}
+        .step-cell{
+            aspect-ratio:1;border-radius:var(--radius-xs);display:flex;
+            align-items:center;justify-content:center;font-size:11px;font-weight:600;
+            cursor:pointer;transition:all 0.2s;position:relative;border:2px solid transparent;
+            font-family:var(--font-stack);-webkit-tap-highlight-color:transparent;
+            min-width:0;background:#f0ece6;color:#bbb;
+        }
+        .step-cell.today{background:#fff;border-color:var(--primary);color:var(--primary);animation:pulse 2s infinite;font-size:13px;font-weight:700}
+        .step-cell.completed{background:var(--green-bg);border-color:var(--green);color:var(--green);cursor:pointer}
+        .step-cell.completed:hover{background:#d8ead6}
+        .step-cell.missed{background:#faf8f5;border-color:#e8e4dd;color:#ccc;cursor:pointer}
+        .step-cell.missed:hover{background:#f0ece6;border-color:#d5d0c8}
+        .step-cell.paused{background:var(--teal-bg);border-color:var(--teal);color:var(--teal);cursor:pointer}
+        .step-cell.paused:hover{background:#d8e8e3}
+        .step-cell.planned-pause{background:var(--teal-bg);border:2px dashed var(--teal);color:var(--teal);cursor:pointer;opacity:0.8}
+        .step-cell.future{background:#f8f6f3;border-color:#e8e4dd;color:#d5d0c8;cursor:default}
+        .step-cell.start-cell{background:linear-gradient(135deg,#fdf8ed,#fdf0d0);border-color:var(--gold);color:var(--gold);font-size:20px;cursor:default;font-weight:700}
+        .step-cell.finish-cell{background:linear-gradient(135deg,#fdf7ed,#fdf0e0);border-color:var(--accent);color:var(--accent);font-size:20px;cursor:default;font-weight:700}
+        .step-cell .day-num{position:absolute;top:3px;right:5px;font-size:8px;font-weight:400;opacity:0.7}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,124,150,0.3)}50%{box-shadow:0 0 0 8px rgba(74,124,150,0)}}
+        .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--text-light);margin-top:8px}
+        .legend-item{display:flex;align-items:center;gap:4px}
+        .legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+        .legend-dot.green{background:var(--green-bg);border:1.5px solid var(--green)}
+        .legend-dot.blue{background:#fff;border:1.5px solid var(--primary)}
+        .legend-dot.gray{background:#faf8f5;border:1.5px solid #e8e4dd}
+        .legend-dot.teal{background:var(--teal-bg);border:1.5px solid var(--teal)}
+        .legend-dot.gold{background:var(--gold-light);border:1.5px solid var(--gold)}
+        .trail-block{
+            background:var(--card);border-radius:var(--radius);padding:16px;
+            margin-bottom:10px;box-shadow:var(--shadow);border:1px solid var(--border);
+        }
+        .trail-block.accent{border-left:4px solid var(--accent)}
+        .trail-block.purple{border-left:4px solid var(--purple)}
+        .trail-block.green{border-left:4px solid var(--green)}
+        .trail-block.blue{border-left:4px solid var(--primary)}
+        .trail-block.pink{border-left:4px solid var(--pink)}
+        .trail-block.teal{border-left:4px solid var(--teal)}
+        .trail-block.gold{border-left:4px solid var(--gold)}
+        .trail-block-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+        .trail-block-icon{font-size:22px}
+        .mini-chart{display:flex;align-items:flex-end;gap:3px;height:60px;padding:4px 0}
+        .mini-chart-bar{flex:1;background:var(--primary);border-radius:3px 3px 0 0;min-width:3px;transition:height 0.3s}
+        .garden-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;min-height:40px;align-items:center}
+        .garden-flower{
+            width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+            justify-content:center;font-size:20px;background:#fefdf7;border:2px solid #e8e4d0;
+            transition:all 0.3s ease;cursor:default;animation:bloomIn 0.5s ease;
+        }
+        @keyframes bloomIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+        .petals-container{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
+        .petal-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:50px}
+        .petal-circle{
+            width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+            justify-content:center;font-size:22px;border:2px solid var(--border);
+            background:#fafaf9;transition:all 0.3s;
+        }
+        .petal-label{font-size:10px;color:var(--text-light);text-align:center;line-height:1.2}
+        .petal-count{font-size:10px;font-weight:600;color:var(--primary)}
+        .summary-section{margin:10px 0;padding:14px;background:#fafaf9;border-radius:var(--radius-sm)}
+        .summary-section h4{font-size:14px;color:var(--primary);margin-bottom:4px}
+        .return-banner{
+            background:#fdf7ed;border:2px solid #e8d5c0;border-radius:var(--radius);
+            padding:18px;text-align:center;margin-bottom:14px;
+        }
+        .return-banner h3{color:var(--accent);margin-bottom:4px}
+        .text-center{text-align:center}
+        .text-muted{color:var(--text-light);font-size:13px}
+        .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
+        .mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}
+        .hidden{display:none!important}
+        .feelings-scroll{max-height:180px;overflow-y:auto;padding-right:4px}
+        .yesterday-hint{
+            background:var(--gold-light);border:1px solid #e8d5a0;
+            border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:12px;
+            font-size:13px;color:#6b5b20;
+        }
+        .rhythm-options{display:flex;gap:10px;margin:12px 0}
+        .rhythm-card{
+            flex:1;background:#fff;border:2px solid var(--border);border-radius:var(--radius);
+            padding:16px 12px;cursor:pointer;transition:all 0.2s;text-align:center;
+            font-family:var(--font-stack);-webkit-tap-highlight-color:transparent;
+        }
+        .rhythm-card:hover{border-color:var(--primary)}
+        .rhythm-card.selected{border-color:var(--primary);background:var(--primary-light)}
+        .rhythm-num{font-size:28px;font-weight:700;color:var(--teal)}
+        .rhythm-desc{font-size:11px;color:var(--text-light);margin-top:4px}
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:#d5d0c8;border-radius:2px}
+        .toast{
+            position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+            background:var(--text);color:#fff;padding:12px 24px;border-radius:24px;
+            font-size:14px;font-weight:500;z-index:2000;
+            animation:toastIn 0.3s ease,toastOut 0.3s ease 2.2s forwards;
+            white-space:nowrap;max-width:90vw;text-align:center;
+        }
+        @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+        @keyframes toastOut{from{opacity:1}to{opacity:0}}
+    </style>
+</head>
+<body>
+    <div class="app-wrapper"><div class="container" id="app"></div></div>
+    <script>
+        const STORAGE_KEY = 'olymp_navigator_v9';
+        const TOTAL_DAYS = 30;
+        const TG_CHANNEL = 'https://t.me/+ZbtgpDqcnTVlNTA6';
+        const TG_KATYA = 'https://t.me/ginger_coach4you';
+
+        const TRACKS = [
+            {id:'visibility',icon:'🏛️',title:'Хочу заявить о себе',desc:'Усилить личный бренд, проявиться видимо, начать вести канал'},
+            {id:'money',icon:'💰',title:'Хочу заработать',desc:'Получить клиента, продать услугу, повысить прайс'},
+            {id:'launch',icon:'🚀',title:'Хочу запустить',desc:'Продукт, проект, линейку, новый формат работы'},
+            {id:'legitimize',icon:'🔥',title:'Хочу легализовать себя',desc:'Разрешить себе быть громкой, дорогой, видимой'},
+            {id:'custom',icon:'✨',title:'Свой трек',desc:'Напишу сама'}
+        ];
+
+        const ALL_VALUES = [
+            'Смелость','Самоценность','Ясность','Поток','Видимость','Изобилие','Игра','Авторитет',
+            'Честность','Лёгкость','Границы','Дерзость','Притяжение','Достоинство','Устойчивость',
+            'Щедрость','Забота','Благодарность','Осознанность','Радость','Смысл','Ответственность',
+            'Доверие','Уединение','Справедливость','Верность','Спонтанность','Уют','Статус','Служение'
+        ];
+
+        const FEELINGS = [
+            {id:'fear',emoji:'😨',name:'Страх',color:'#c9a96e',tagline:'Мне страшно. А значит — важно.'},
+            {id:'anger',emoji:'🔥',name:'Злость',color:'#c47a7a',tagline:'Я злюсь. А значит — мне не всё равно.'},
+            {id:'guilt',emoji:'😞',name:'Вина',color:'#c4946c',tagline:'Я чувствую вину. А значит — мне важны отношения.'},
+            {id:'shame',emoji:'🫣',name:'Стыд',color:'#c47a9a',tagline:'Мне стыдно. А значит — я хочу быть принятой.'},
+            {id:'sadness',emoji:'💧',name:'Печаль',color:'#6b8fad',tagline:'Мне грустно. А значит — я что-то теряю.'},
+            {id:'disgust',emoji:'😟',name:'Отвращение',color:'#8b9a6e',tagline:'Мне неприятно. Значит — ценности под угрозой.'},
+            {id:'despair',emoji:'🌪️',name:'Отчаяние',color:'#7a6e8b',tagline:'Я в отчаянии. Старые опоры рухнули.'},
+            {id:'confusion',emoji:'😶',name:'Растерянность',color:'#9a9a9a',tagline:'Я на перекрёстке, и это нормально.'},
+            {id:'boredom',emoji:'😑',name:'Скука',color:'#b0a89a',tagline:'Старое больше не работает.'},
+            {id:'envy',emoji:'🎯',name:'Зависть',color:'#8b9a5e',tagline:'Я вижу, чего хочу.'},
+            {id:'disappointment',emoji:'🎈',name:'Разочарование',color:'#9a8b7a',tagline:'Иллюзия встретилась с реальностью.'},
+            {id:'regret',emoji:'😔',name:'Сожаление',color:'#8b8b9a',tagline:'Мне важно было бы иначе.'},
+            {id:'resentment',emoji:'🦔',name:'Обида',color:'#a08b7a',tagline:'Меня не увидели там, где было важно.'},
+            {id:'joy',emoji:'🌞',name:'Радость',color:'#c9a84e',tagline:'Я живая.'},
+            {id:'interest',emoji:'🧠',name:'Интерес',color:'#5b9a7e',tagline:'Я живой.'}
+        ];
+
+        const HEAVY_FEELINGS = {
+            shame:{title:'💭 Стыд',body:'Стыд часто говорит: «Кто ты такая, чтобы заявлять о себе?»',truth:'Но правда: ты эксперт. Твоя е*анца — это твоя суперсила. Не ты странная. Это мир привык к серости.',note:'Это чувство — не весь ты. Ты больше, чем стыд.'},
+            despair:{title:'🌪️ Отчаяние',body:'Отчаяние приходит, когда старые опоры рухнули, а новые ещё не выросли.',truth:'Это момент, когда старая карта кончилась. Ты не сломалась — ты на перевале.',note:'Это чувство — не весь ты. Ты больше, чем отчаяние.'},
+            guilt:{title:'💭 Вина',body:'Вина говорит: «Ты должна быть удобной. Не высовывайся.»',truth:'Но вина — это сигнал, что тебе важны отношения. А не приказ быть удобной.',note:'Это чувство — не весь ты. Ты больше, чем вина.'},
+            resentment:{title:'🦔 Обида',body:'Обида — это когда тебя не увидели там, где было важно.',truth:'Обида говорит о твоей потребности быть замеченной. Это честность, а не слабость.',note:'Это чувство — не весь ты. Ты больше, чем обида.'},
+            fear:{title:'😨 Страх',body:'Страх — это сторож у ворот твоего Олимпа. Он проверяет: ты серьёзно?',truth:'Если ты идёшь, несмотря на страх — он отходит. Страх не враг, а проверка на прочность.',note:'Это чувство — не весь ты. Ты больше, чем страх.'}
+        };
+
+        const GARDEN_FLOWERS = ['🌸','🌼','🌺','🌻','🌷','🪷','💮','🏵️','🌾','🍀'];
+
+        const SUPPORT_PHRASES = {
+            low:['Даже богини спускаются к подножию, чтобы набраться сил.','Не каждый день — вершина. Иногда нужно просто постоять и посмотреть на вид.','Спад — это не падение. Это вдох перед новым подъёмом.'],
+            high:['Ты сияешь. Клиенты это чувствуют.','Сегодня твой след на Олимпе особенно глубокий.','Заметь этот момент. Ты выбрала себя — и это сработало.'],
+            return:['Олимп ждал тебя. Никто не занял твоё место.','Ты вернулась. Это главное. Путь не стёрся — он ждал тебя.','Каждый день — новый шанс. Сегодня ты им воспользовалась.']
+        };
+
+        function getDefaultState() {
+            return {
+                screen:'create_wanderer',wandererName:'',wandererEmoji:'',selectedTrack:'',goal:'',goalWhy:'',
+                goalDepth:'',goalHistory:[],values:[],tempo:'',rhythmDays:8,pausedDays:{},startDate:null,
+                days:{},weeklyIdentity:{},gratitudeGarden:[],lastActiveDate:null,completedCycles:0,
+                sharingHistory:[],currentViewDay:null,_maelstromShown:false,
+                growData:{step:1,g1:'',g2:'',g3:'',g4:'',r1:'',r2:'',r3:'',r4:'',r5:'',o1:'',o2:'',o3:'',w1:'',w2:'',w3:'',w4:'',w5:''},
+                lightData:{goal:'',signs:'',ownGoal:'',why:'',scale:5,resources:''}
+            };
+        }
+
+        function loadState() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if(raw){try{const s=JSON.parse(raw);const d=getDefaultState();return{...d,...s,days:{...d.days,...s.days},pausedDays:{...d.pausedDays,...(s.pausedDays||{})},growData:{...d.growData,...(s.growData||{})},lightData:{...d.lightData,...(s.lightData||{})}};}catch(e){}}
+            return getDefaultState();
+        }
+        function saveState(state){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+        let state = loadState();
+
+        function getTodayDayNumber() {
+            if(!state.startDate) return 0;
+            const start=new Date(state.startDate),today=new Date();
+            const diff=Math.floor((today-start)/(1000*60*60*24))+1;
+            return Math.max(1,Math.min(TOTAL_DAYS,diff));
+        }
+        function getDaysSinceLastActive() {
+            if(!state.lastActiveDate) return 0;
+            return Math.floor((new Date()-new Date(state.lastActiveDate))/(1000*60*60*24));
+        }
+        function getProgress() {
+            const today=getTodayDayNumber(),completed=Object.keys(state.days).length;
+            const paused=Object.keys(state.pausedDays).filter(d=>state.pausedDays[d]&&!state.pausedDays[d]._placeholder).length;
+            const total=TOTAL_DAYS,remaining=Math.max(0,total-today);
+            const activeDays=Math.max(1,today-paused);
+            const percent=Math.round((completed/activeDays)*100);
+            return {total,completed,paused,remaining,percent:Math.min(100,percent),today};
+        }
+        function getCurrentWeekNumber(){return Math.ceil(getTodayDayNumber()/7);}
+        function formatDate(dayNumber) {
+            if(!state.startDate) return `День ${dayNumber}`;
+            const start=new Date(state.startDate);start.setDate(start.getDate()+dayNumber-1);
+            const months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+            return `${start.getDate()} ${months[start.getMonth()]}`;
+        }
+        function getRandomPhrase(cat){const p=SUPPORT_PHRASES[cat];return p[Math.floor(Math.random()*p.length)];}
+        function escapeHtml(s){if(!s)return '';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+        function showToast(msg) {
+            const t=document.createElement('div');t.className='toast';t.textContent=msg;
+            document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+        }
+
+        function getYesterdayExperiment() {
+            const today=getTodayDayNumber();
+            if(today<=1||!state.days[today-1]) return null;
+            return state.days[today-1].tomorrowExperiment||null;
+        }
+
+        function getPlannedPauseDays() {
+            if(!state.startDate) return {};
+            const days={};
+            const start=new Date(state.startDate);
+            for(let d=1;d<=TOTAL_DAYS;d++){
+                const date=new Date(start);date.setDate(date.getDate()+d-1);
+                const dow=date.getDay();
+                if(dow===0||dow===6) days[d]=true;
+            }
+            return days;
+        }
+
+        function render() {
+            const app=document.getElementById('app');
+            state.lastActiveDate=new Date().toISOString().split('T')[0];
+            saveState(state);
+            const daysAway=getDaysSinceLastActive();
+            if(daysAway>=3&&state.screen==='trail'&&state.startDate&&getTodayDayNumber()>1){
+                app.innerHTML=renderReturnScreen();attachListeners();return;
+            }
+            switch(state.screen){
+                case 'create_wanderer':app.innerHTML=renderCreateWanderer();break;
+                case 'choose_tempo':app.innerHTML=renderChooseTempo();break;
+                case 'set_track':app.innerHTML=renderSetTrack();break;
+                case 'choose_depth':app.innerHTML=renderChooseDepth();break;
+                case 'set_goal_light':app.innerHTML=renderSetGoalLight();break;
+                case 'grow_session':app.innerHTML=renderGrowSession();break;
+                case 'set_rhythm':app.innerHTML=renderSetRhythm();break;
+                case 'set_values':app.innerHTML=renderSetValues();break;
+                case 'trail':app.innerHTML=renderTrail();break;
+                case 'daily_card':app.innerHTML=renderDailyCard(state.currentViewDay||getTodayDayNumber());break;
+                case 'missed_day':app.innerHTML=renderMissedDay(state.currentViewDay);break;
+                case 'paused_day':app.innerHTML=renderPausedDay(state.currentViewDay);break;
+                case 'review_day':app.innerHTML=renderReviewDay(state.currentViewDay);break;
+                case 'completed':app.innerHTML=renderSummary();break;
+                default:app.innerHTML=renderTrail();
+            }
+            attachListeners();
+        }
+
+        function renderCreateWanderer() {
+            const hasHistory=state.completedCycles>0;
+            return `<div class="card" style="text-align:center;">
+                <div style="font-size:48px;margin-bottom:8px;">🏛️</div>
+                <h1>Мой Олимп</h1>
+                <p class="text-muted mb-12">Навигатор возвращения к себе<br>— для тех, кто готов легализовать свою силу.</p>
+                ${hasHistory?`<div class="return-banner"><h3>🌟 С возвращением, богиня!</h3><p class="text-muted">Ты уже прошла ${state.completedCycles} ${state.completedCycles===1?'месяц':state.completedCycles<5?'месяца':'месяцев'} на пути к Олимпу.</p></div>`:''}
+                <label style="text-align:left;">Как зовут тебя, богиня?</label>
+                <p class="text-muted" style="font-size:12px;text-align:left;margin-top:-4px;">Создай своё имя на Олимпе. Например: Афина, Лира, Север, Искра...</p>
+                <input type="text" id="wandererName" placeholder="Твоё имя на Олимпе" value="${escapeHtml(state.wandererName)}" maxlength="30" autocomplete="off">
+                <label style="text-align:left;margin-top:16px;">Выбери свой символ:</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;" id="emojiPicker">
+                    ${['👑','🦁','🔥','⭐','🌙','💎','🦅','🐉','🌊','✨','🏛️','🪐','🌸','⚡','🕊️','🌿'].map(e=>`<button class="feeling-chip ${state.wandererEmoji===e?'selected':''}" data-emoji="${e}" style="font-size:24px;padding:10px 14px;">${e}</button>`).join('')}
+                </div>
+                <button class="btn btn-primary mt-12" id="btnStartWanderer">На Олимп</button>
+            </div>`;
+        }
+
+        function renderChooseTempo() {
+            const isReturning=state.completedCycles>0;
+            return `<div class="card" style="text-align:center;">
+                <div style="font-size:44px;">${state.wandererEmoji||'👑'}</div>
+                <h2>${state.wandererName||'Богиня'}, выбери темп</h2>
+                <p class="text-muted mb-16">Ты можешь начать мягко или взойти на Олимп сразу.</p>
+                <div class="tempo-options" id="tempoOptions">
+                    ${!isReturning?`<button class="tempo-card" data-tempo="soft"><span class="tempo-icon">🌱</span><span class="tempo-title">Мягкое восхождение</span><span class="tempo-desc">День 1: имя и символ. День 2: трек и цель. День 3: ценности и ритм.</span></button>
+                    <button class="tempo-card" data-tempo="confident"><span class="tempo-icon">🌿</span><span class="tempo-title">Уверенный шаг</span><span class="tempo-desc">Сегодня: имя + трек + цель. Завтра: ценности + ритм.</span></button>`:''}
+                    <button class="tempo-card" data-tempo="deep"><span class="tempo-icon">🏛️</span><span class="tempo-title">${isReturning?'Быстрый старт':'На Олимп сразу'}</span><span class="tempo-desc">${isReturning?'Трек + цель + ценности + ритм сразу.':'Всё сегодня: имя + трек + цель + ценности + ритм.'}</span></button>
+                </div>
+                <button class="btn btn-primary mt-12 hidden" id="btnConfirmTempo">Продолжить</button>
+            </div>`;
+        }
+
+        function renderSetTrack() {
+            return `<div class="card">
+                <div style="text-align:center;font-size:40px;margin-bottom:8px;">${state.wandererEmoji||'👑'}</div>
+                <h2 style="text-align:center;">${state.wandererName||'Богиня'}, что ты хочешь создать?</h2>
+                <p class="text-muted text-center mb-12">Выбери свой трек — или напиши свой.</p>
+                <div class="track-options" id="trackOptions">
+                    ${TRACKS.map(t=>`<button class="track-card ${state.selectedTrack===t.id?'selected':''}" data-track="${t.id}"><span class="track-icon">${t.icon}</span><div><div class="track-title">${t.title}</div><div class="track-desc">${t.desc}</div></div></button>`).join('')}
+                </div>
+                <button class="btn btn-primary mt-8" id="btnSaveTrack">Дальше — к цели</button>
+            </div>`;
+        }
+
+        function renderChooseDepth() {
+            const track=TRACKS.find(t=>t.id===state.selectedTrack);
+            return `<div class="card" style="text-align:center;">
+                <div style="font-size:36px;">${track?track.icon:'✨'}</div>
+                <h2>${track?track.title:'Твой трек'}</h2>
+                <p class="text-muted mb-16">Как глубоко ты хочешь настроить цель?</p>
+                <div class="tempo-options" style="margin-bottom:8px;">
+                    <button class="tempo-card" data-depth="light" style="text-align:left;">
+                        <span class="tempo-icon">🌱</span><span class="tempo-title">Лайт-версия</span>
+                        <span class="tempo-desc">6 вопросов, ~3 минуты. Для быстрого старта.</span>
+                    </button>
+                    <button class="tempo-card" data-depth="grow" style="text-align:left;">
+                        <span class="tempo-icon">🏛️</span><span class="tempo-title">GROW-компас</span>
+                        <span class="tempo-desc">4 шага, ~7 минут. Полная коучинговая настройка цели.</span>
+                    </button>
+                </div>
+                <p class="text-muted" style="font-size:11px;">Ты всегда сможешь переключиться между версиями.</p>
+            </div>`;
+        }
+
+        function renderSetGoalLight() {
+            const d=state.lightData;
+            return `<div class="card">
+                <h2 style="text-align:center;">🌱 Быстрая настройка цели</h2>
+                <p class="text-muted text-center mb-12">~3 минуты</p>
+                <label>Чего я хочу добиться за этот месяц?</label><textarea id="lgGoal">${escapeHtml(d.goal)}</textarea>
+                <label>Как я пойму, что получилось? По каким признакам?</label><textarea id="lgSigns">${escapeHtml(d.signs)}</textarea>
+                <label>Это моя личная цель или навязанная?</label><textarea id="lgOwnGoal">${escapeHtml(d.ownGoal)}</textarea>
+                <label>Почему эта цель для меня важна?</label><textarea id="lgWhy">${escapeHtml(d.why)}</textarea>
+                <label>Где я сейчас по шкале 1–10 относительно цели?</label>
+                <div class="scale-row" id="lgScaleRow">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="scale-btn ${d.scale===n?'active':''}" data-scale="${n}">${n}</button>`).join('')}</div>
+                <label>Какие ресурсы у меня есть? Чего не хватает?</label><textarea id="lgResources">${escapeHtml(d.resources)}</textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" id="btnSwitchToGrow" style="flex:1;">Хочу глубже → GROW</button>
+                    <button class="btn btn-primary" id="btnSaveLight" style="flex:2;">Сохранить и продолжить</button>
+                </div>
+            </div>`;
+        }
+
+        function renderGrowSession() {
+            const gd=state.growData;const step=gd.step||1;
+            let content='';
+            switch(step){
+                case 1:content=renderGrowStep1(gd);break;
+                case 2:content=renderGrowStep2(gd);break;
+                case 3:content=renderGrowStep3(gd);break;
+                case 4:content=renderGrowStep4(gd);break;
+                default:content=renderGrowStep1(gd);
+            }
+            return `<div class="card">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <span style="font-size:24px;">🏛️</span>
+                    <div style="flex:1;"><h3 style="margin:0;">GROW-компас</h3><p class="text-muted" style="font-size:11px;">~7 минут • Шаг ${step} из 4</p></div>
+                </div>
+                <div class="grow-progress">${[1,2,3,4].map(s=>`<div class="grow-dot ${s<step?'done':s===step?'active':''}"></div>`).join('')}</div>
+                ${content}
+            </div>`;
+        }
+
+        function renderGrowStep1(gd) {
+            return `<div><h3>Шаг 1: ЦЕЛЬ</h3><p class="text-muted mb-12">Чего ты хочешь, богиня?</p>
+                <label>Чего я хочу добиться?</label><textarea id="gG1">${escapeHtml(gd.g1)}</textarea>
+                <label>Как я пойму, что получилось? По каким признакам?</label><textarea id="gG2">${escapeHtml(gd.g2)}</textarea>
+                <label>Это моя личная цель или навязанная извне?</label><textarea id="gG3">${escapeHtml(gd.g3)}</textarea>
+                <label>Почему эта цель для меня важна?</label><textarea id="gG4">${escapeHtml(gd.g4)}</textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" id="btnSwitchToLight" style="flex:1;">← Лайт-версия</button>
+                    <button class="btn btn-outline btn-sm" id="btnGrowSaveExit" style="flex:1;">Сохранить и выйти</button>
+                    <button class="btn btn-primary" id="btnGrowNext" style="flex:2;">Дальше → Реальность</button>
+                </div></div>`;
+        }
+
+        function renderGrowStep2(gd) {
+            return `<div><h3>Шаг 2: РЕАЛЬНОСТЬ</h3><p class="text-muted mb-12">Где ты сейчас? Честно. Без прикрас.</p>
+                <label>Что происходит прямо сейчас? (только факты)</label><textarea id="gR1">${escapeHtml(gd.r1)}</textarea>
+                <label>Где я по шкале 1–10 относительно цели?</label>
+                <div class="scale-row" id="gScaleRow">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="scale-btn ${gd.r2==n?'active':''}" data-scale="${n}">${n}</button>`).join('')}</div>
+                <label>Что я уже пробовала? Что сработало, а что нет?</label><textarea id="gR3">${escapeHtml(gd.r3)}</textarea>
+                <label>Какие ресурсы у меня есть? (навыки, связи, опыт)</label><textarea id="gR4">${escapeHtml(gd.r4)}</textarea>
+                <label>Чего объективно не хватает?</label><textarea id="gR5">${escapeHtml(gd.r5)}</textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" id="btnGrowBack" style="flex:1;">← Назад</button>
+                    <button class="btn btn-outline btn-sm" id="btnGrowSaveExit" style="flex:1;">Сохранить и выйти</button>
+                    <button class="btn btn-primary" id="btnGrowNext" style="flex:2;">Дальше → Варианты</button>
+                </div></div>`;
+        }
+
+        function renderGrowStep3(gd) {
+            return `<div><h3>Шаг 3: ВАРИАНТЫ</h3><p class="text-muted mb-12">Какие пути ты видишь? Даже дерзкие.</p>
+                <label>Какие есть варианты? (минимум 3)</label><textarea id="gO1">${escapeHtml(gd.o1)}</textarea>
+                <label>Что бы я сделала, если бы не боялась?</label><textarea id="gO2">${escapeHtml(gd.o2)}</textarea>
+                <label>Кто может помочь или что-то подсказать?</label><textarea id="gO3">${escapeHtml(gd.o3)}</textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" id="btnGrowBack" style="flex:1;">← Назад</button>
+                    <button class="btn btn-outline btn-sm" id="btnGrowSaveExit" style="flex:1;">Сохранить и выйти</button>
+                    <button class="btn btn-primary" id="btnGrowNext" style="flex:2;">Дальше → План</button>
+                </div></div>`;
+        }
+
+        function renderGrowStep4(gd) {
+            return `<div><h3>Шаг 4: ПЛАН</h3><p class="text-muted mb-12">Твой первый шаг на Олимп.</p>
+                <label>Что именно я сделаю? (конкретное действие)</label><textarea id="gW1">${escapeHtml(gd.w1)}</textarea>
+                <label>Когда я это сделаю? (дата / время)</label><textarea id="gW2">${escapeHtml(gd.w2)}</textarea>
+                <label>Насколько я готова по шкале 1–10?</label>
+                <div class="scale-row" id="gScaleRowW">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="scale-btn ${gd.w3==n?'active':''}" data-scale="${n}">${n}</button>`).join('')}</div>
+                <label>Что может помешать и как я с этим справлюсь?</label><textarea id="gW4">${escapeHtml(gd.w4)}</textarea>
+                <label>Как я отмечу, что шаг сделан?</label><textarea id="gW5">${escapeHtml(gd.w5)}</textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" id="btnGrowBack" style="flex:1;">← Назад</button>
+                    <button class="btn btn-outline btn-sm" id="btnGrowSaveExit" style="flex:1;">Сохранить и выйти</button>
+                    <button class="btn btn-gold" id="btnGrowFinish" style="flex:2;">Завершить GROW-компас</button>
+                </div></div>`;
+        }
+
+        function renderSetRhythm() {
+            return `<div class="card" style="text-align:center;">
+                <div style="font-size:36px;">🛌</div>
+                <h2>Твой ритм восхождения</h2>
+                <p class="text-muted mb-12">Богини не идут на Олимп без отдыха.<br>Сколько дней у подножия тебе нужно?</p>
+                <div class="rhythm-options" id="rhythmOptions">
+                    <button class="rhythm-card ${state.rhythmDays===4?'selected':''}" data-rhythm="4"><div class="rhythm-num">4</div><div class="rhythm-desc">~1 день в неделю</div></button>
+                    <button class="rhythm-card ${state.rhythmDays===6?'selected':''}" data-rhythm="6"><div class="rhythm-num">6</div><div class="rhythm-desc">~1–2 дня в неделю</div></button>
+                    <button class="rhythm-card ${state.rhythmDays===8?'selected':''}" data-rhythm="8"><div class="rhythm-num">8</div><div class="rhythm-desc">~2 дня в неделю</div></button>
+                </div>
+                <p class="text-muted" style="font-size:11px;">Выходные распределятся по субботам и воскресеньям. Ты всегда сможешь перенести.</p>
+                <button class="btn btn-primary mt-12" id="btnSaveRhythm">Продолжить</button>
+            </div>`;
+        }
+
+        function renderSetValues() {
+            const selected=state.values||[];
+            return `<div class="card">
+                <h2 style="text-align:center;">🧭 Компас богини</h2>
+                <p class="text-muted text-center mb-16">Выбери 3 ценности для пути к Олимпу.</p>
+                <div class="feelings-grid" id="valuesGrid">
+                    ${ALL_VALUES.map(v=>`<button class="feeling-chip ${selected.includes(v)?'selected':''}" data-value="${v}">${v}</button>`).join('')}
+                </div>
+                <p class="text-muted text-center" id="valuesCount">Выбрано: ${selected.length} из 3</p>
+                <button class="btn btn-primary mt-12" id="btnSaveValues" ${selected.length!==3?'disabled style="opacity:0.5;"':''}>Сохранить и выйти на путь</button>
+            </div>`;
+        }
+
+        function renderTrail() {
+            const progress=getProgress(),today=progress.today;
+            const allDays=Object.entries(state.days).map(([d,data])=>({day:parseInt(d),...data}));
+            const sortedDays=allDays.sort((a,b)=>a.day-b.day);
+            const scales=sortedDays.map(d=>d.scale||0);
+            const weekNumber=getCurrentWeekNumber();
+            const showIdentity=today>0&&today%7===0&&!state.weeklyIdentity[weekNumber];
+            const showGratitude=today>0&&today%3===0&&!state.gratitudeGarden.find(g=>g.dayNumber===today)&&state.days[today];
+            const showMaelstromWarning=today>=3&&today<=5&&!state._maelstromShown;
+            const totalFilled=Object.keys(state.days).length;
+            const track=TRACKS.find(t=>t.id===state.selectedTrack);
+            const recentDays=sortedDays.filter(d=>d.day>=today-2&&d.day<=today);
+            const heavyRecent=recentDays.filter(d=>d.feelings&&d.feelings.some(fid=>HEAVY_FEELINGS[fid]));
+            const lastHeavy=heavyRecent.pop();
+            const lastSelfSupport=sortedDays.filter(d=>d.selfSupport).pop();
+            const yesterdayExp=getYesterdayExperiment();
+            const rhythmDays=state.rhythmDays||8;
+
+            let showGentleReturn=false;
+            if(today>2&&!state.days[today]&&!state.pausedDays[today]){
+                let missedStreak=0;
+                for(let d=today-1;d>=1;d--){if(!state.days[d]&&!state.pausedDays[d])missedStreak++;else break;}
+                if(missedStreak>=2) showGentleReturn=true;
+            }
+
+            return `
+                <div class="card" style="padding:14px 18px;">
+                    <div class="trail-header" style="margin-bottom:0;">
+                        <div class="trail-wanderer">${state.wandererEmoji||'👑'}</div>
+                        <div class="trail-info">
+                            <div class="trail-name">${state.wandererName||'Богиня'}</div>
+                            ${track?`<div class="trail-track">${track.icon} ${track.title}</div>`:''}
+                            <div class="trail-goal">${state.goal||'Цель ещё не задана'}</div>
+                            ${state.values.length>0?`<div class="trail-compass">🧭 ${state.values.join(' • ')}</div>`:''}
+                        </div>
+                    </div>
+                    ${today>0?`<div class="progress-bar mt-8"><div class="progress-fill" style="width:${progress.percent}%;"></div></div>
+                    <div class="progress-stats"><span>Шагов: ${progress.completed}</span><span>День ${today}</span><span>У подножия: ${progress.paused}/${rhythmDays}</span></div>`:''}
+                </div>
+
+                <div class="card">
+                    <h3 style="text-align:center;">🏛️ Путь на Олимп</h3>
+                    <div class="steps-grid" id="stepsGrid">${renderStepCells(today)}</div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="legend-dot green"></span> Пройдено</span>
+                        <span class="legend-item"><span class="legend-dot blue"></span> Сегодня</span>
+                        <span class="legend-item"><span class="legend-dot teal"></span> У подножия</span>
+                        <span class="legend-item"><span class="legend-dot gold"></span> Старт/Финиш</span>
+                    </div>
+                </div>
+
+                ${yesterdayExp?`<div class="yesterday-hint">🔮 Вчера ты хотела попробовать: «${escapeHtml(yesterdayExp)}»<br><span style="font-size:11px;color:#8a7a4a;">Если не получилось — это не провал. Это данные для следующего шага.</span></div>`:''}
+
+                ${showGentleReturn?`<div class="trail-block teal"><div class="trail-block-header"><span class="trail-block-icon">🍃</span><strong>Тихий день</strong></div><p style="font-size:13px;">Прошло несколько дней. Так бывает. Олимп не судит. Он просто ждёт.</p></div>`:''}
+
+                ${today>0?`<div class="card text-center">
+                    ${state.days[today]?`<p style="color:var(--green);font-weight:600;">✅ Шаг ${today} сделан</p><p class="text-muted" style="font-size:13px;">Приближение: ${state.days[today].scale}/10</p>${state.days[today].scale>=8?`<p style="font-size:12px;color:var(--green);font-style:italic;">${getRandomPhrase('high')}</p>`:state.days[today].scale<=3?`<p style="font-size:12px;color:var(--accent);font-style:italic;">${getRandomPhrase('low')}</p>`:''}<button class="btn btn-secondary btn-block mt-8" id="btnReviewToday">Посмотреть</button>`:
+                    state.pausedDays[today]?`<p style="color:var(--teal);font-weight:600;">🛌 День ${today} — у подножия</p><p class="text-muted" style="font-size:13px;">Запланированный отдых.</p><button class="btn btn-teal btn-block mt-8" id="btnOpenPaused">Заполнить ритуал</button><button class="btn btn-sm btn-outline btn-block mt-8" id="btnUnpause">Превратить в шаг</button>`:
+                    `<p style="font-weight:600;">День ${today} — ${formatDate(today)}</p><p class="text-muted mb-8" style="font-size:13px;">Твой шаг к Олимпу</p><button class="btn btn-primary btn-block" id="btnStartToday">Сделать шаг</button><button class="btn btn-outline btn-block mt-8" id="btnPauseToday">День у подножия</button>`}
+                    <button class="btn btn-outline btn-sm btn-block mt-8" id="btnChangeGoal">Богиня меняет маршрут</button>
+                    ${state.days[today]?`<button class="btn btn-outline btn-sm btn-block mt-8" id="btnShareTodayInline">Поделиться с Катей</button>`:''}
+                </div>`:`<div class="card text-center"><p style="font-size:32px;">🏛️</p><p style="font-weight:600;font-size:18px;">Ты у подножия Олимпа</p><p class="text-muted">Твой путь начинается здесь. Вершина ждёт.</p><button class="btn btn-gold btn-block mt-8" id="btnStartJourney">Начать восхождение</button></div>`}
+
+                ${renderTrailBlocks(today,lastHeavy,lastSelfSupport,showIdentity,showGratitude,showMaelstromWarning,totalFilled,sortedDays,scales)}
+                ${state.gratitudeGarden.length>0?renderGardenBlock():''}
+                ${totalFilled>=7?renderPetalsBlock(sortedDays):''}
+                <div class="text-center mt-16" style="padding:12px;background:var(--gold-light);border-radius:var(--radius-sm);">
+                    <p style="font-size:12px;color:var(--accent);">Готова легализовать свою е*анцу и зарабатывать как про? — <a href="${TG_CHANNEL}" target="_blank" style="color:var(--accent);font-weight:600;">«Разрешаю себе чувствовать»</a></p>
+                </div>
+            `;
+        }
+
+        function renderStepCells(today) {
+            let cells='';cells+=`<div class="step-cell start-cell" title="Старт">🏛️</div>`;
+            for(let d=1;d<=TOTAL_DAYS;d++){
+                let cls='',content=d,title=`День ${d}`;
+                if(state.days[d]){cls='completed';content='⭐';title=`День ${d} — пройден (${state.days[d].scale}/10)`;}
+                else if(state.pausedDays[d]&&!state.pausedDays[d]._planned){cls='paused';content='🛌';title=`День ${d} — у подножия`;}
+                else if(state.pausedDays[d]&&state.pausedDays[d]._planned){cls='planned-pause';content='🛌';title=`День ${d} — запланирован у подножия`;}
+                else if(d<today){cls='missed';content='·';title=`День ${d} — упущен`;}
+                else if(d===today){cls='today';content=d;title=`Сегодня — день ${d}`;}
+                else{cls='future';content='🔒';title=`День ${d}`;}
+                cells+=`<button class="step-cell ${cls}" data-day="${d}" title="${title}" ${cls==='future'?'disabled':''}><span class="day-num">${d}</span>${content}</button>`;
+            }
+            cells+=`<div class="step-cell finish-cell" title="Вершина">🏆</div>`;
+            return cells;
+        }
+
+        function renderGardenBlock() {
+            const flowers=state.gratitudeGarden.map((g,i)=>GARDEN_FLOWERS[i%GARDEN_FLOWERS.length]);
+            return `<div class="trail-block green"><div class="trail-block-header"><span class="trail-block-icon">🌸</span><strong>Сад благодарности</strong></div><div class="garden-grid">${flowers.map((f,i)=>`<div class="garden-flower" title="${escapeHtml(state.gratitudeGarden[i].text)}">${f}</div>`).join('')}</div></div>`;
+        }
+
+        function renderPetalsBlock(sortedDays) {
+            const last7Days=sortedDays.filter(d=>d.day>getTodayDayNumber()-7);const af={};
+            last7Days.forEach(d=>{if(d.feelings)d.feelings.forEach(fid=>{af[fid]=(af[fid]||0)+1;});});
+            const tf=Object.entries(af).sort((a,b)=>b[1]-a[1]).slice(0,8);
+            if(tf.length===0) return '';
+            return `<div class="trail-block pink"><div class="trail-block-header"><span class="trail-block-icon">🎨</span><strong>Мои чувства за неделю</strong></div><div class="petals-container">${tf.map(([fid,c])=>{const f=FEELINGS.find(ff=>ff.id===fid);if(!f)return'';return`<div class="petal-item"><div class="petal-circle" style="border-color:${f.color};background:${f.color}15;">${f.emoji}</div><span class="petal-label">${f.name}</span><span class="petal-count">${c}</span></div>`;}).join('')}</div></div>`;
+        }
+
+        function renderTrailBlocks(today,lastHeavy,lastSelfSupport,showIdentity,showGratitude,showMaelstromWarning,totalFilled,sortedDays,scales) {
+            let html='';
+            if(showMaelstromWarning){html+=`<div class="trail-block accent"><div class="trail-block-header"><span class="trail-block-icon">🌊</span><strong>Заметка Навигатора</strong></div><p style="font-size:13px;color:#6b5b4e;">Ты можешь заметить, что чувств стало больше. Или они стали острее. Это нормально. Это не регресс — это ты начинаешь слышать то, что раньше заглушала.</p><button class="btn btn-sm btn-outline mt-8" id="btnMaelstromOk">Поняла, спасибо</button></div>`;}
+            if(lastHeavy){const hf=HEAVY_FEELINGS[lastHeavy.feelings.find(fid=>HEAVY_FEELINGS[fid])];if(hf){const f=FEELINGS.find(ff=>ff.id===lastHeavy.feelings.find(fid=>HEAVY_FEELINGS[fid]));html+=`<div class="trail-block accent"><div class="trail-block-header"><span class="trail-block-icon">🫂</span><strong>Контейнер поддержки</strong></div><div class="container-box" style="margin:0;background:transparent;border:none;padding:8px 0;"><h4>${hf.title} ${f?f.emoji:''}</h4><p>${hf.body}</p><p><strong>${hf.truth}</strong></p><p class="note">${hf.note}</p></div><a href="${TG_KATYA}" target="_blank" class="btn btn-accent btn-sm mt-8">Мне нужно больше поддержки</a></div>`;}}
+            if(scales.length>=5){html+=`<div class="trail-block blue"><div class="trail-block-header"><span class="trail-block-icon">📈</span><strong>Динамика восхождения</strong></div><div class="mini-chart">${scales.map(s=>`<div class="mini-chart-bar" style="height:${s*10}%;" title="${s}/10"></div>`).join('')}</div></div>`;}
+            if(lastSelfSupport){html+=`<div class="trail-block green"><div class="trail-block-header"><span class="trail-block-icon">🤲</span><strong>Моя самоподдержка</strong></div><p style="font-size:13px;">«${escapeHtml(lastSelfSupport.selfSupport.substring(0,100))}${lastSelfSupport.selfSupport.length>100?'…':''}»</p><button class="btn btn-sm btn-outline mt-8" id="btnAddSelfSupport">Добавить новый</button></div>`;}
+            if(showIdentity){html+=`<div class="trail-block purple"><div class="trail-block-header"><span class="trail-block-icon">🪞</span><strong>Кто я сейчас?</strong></div><p class="text-muted" style="font-size:13px;">Прошла ещё неделя.</p><textarea id="identityInputTrail" placeholder="Я — богиня, которая...">${state.weeklyIdentity[getCurrentWeekNumber()]||''}</textarea><button class="btn btn-primary btn-sm mt-8" id="btnSaveIdentityTrail">Сохранить</button></div>`;}
+            if(showGratitude){html+=`<div class="trail-block green"><div class="trail-block-header"><span class="trail-block-icon">🌸</span><strong>Сад благодарности</strong></div><p class="text-muted" style="font-size:13px;">Что ценного было в эти дни?</p><textarea id="gratitudeInputTrail" placeholder="Я благодарна за..."></textarea><button class="btn btn-primary btn-sm mt-8" id="btnSaveGratitudeTrail">Добавить в сад</button></div>`;}
+            if(totalFilled>=7){html+=`<div class="trail-block gold text-center"><p style="font-size:13px;margin-bottom:6px;">Пройдена неделя. Хочешь поделиться с Катей?</p><button class="btn btn-sm btn-outline" id="btnShareWeek">Поделиться неделей</button></div>`;}
+            return html;
+        }
+
+        function renderDailyCard(dayNumber) {
+            const data=state.days[dayNumber]||null;
+            const yesterdayExp=dayNumber>1&&state.days[dayNumber-1]?state.days[dayNumber-1].tomorrowExperiment:null;
+            return `<div class="card">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <button class="btn btn-icon btn-outline btn-sm" id="btnBackToTrail" style="width:40px;height:40px;font-size:16px;">←</button>
+                    <div><h3 style="margin:0;">Шаг ${dayNumber}</h3><p class="text-muted" style="font-size:12px;">${formatDate(dayNumber)}</p></div>
+                </div>
+                ${yesterdayExp?`<div class="yesterday-hint">🔮 Вчера ты хотела попробовать: «${escapeHtml(yesterdayExp)}»<br><span style="font-size:11px;color:#8a7a4a;">Если не получилось — это не провал. Это данные.</span></div>`:''}
+                ${data?renderCompletedDayContent(dayNumber,data):renderTodayForm(dayNumber)}
+            </div>`;
+        }
+
+        function renderMissedDay(dayNumber) {
+            return `<div class="card" style="text-align:center;"><div style="font-size:40px;margin-bottom:8px;">🌫️</div><h3>Шаг ${dayNumber} — ${formatDate(dayNumber)}</h3><p class="text-muted mb-8">Этот день прошёл. Но ты можешь пройти его сейчас.</p><p style="font-size:13px;color:var(--accent);font-style:italic;">«Ты вернулась. Олимп ждал.»</p><button class="btn btn-primary btn-block mt-12" id="btnLiveMissed">Пройти этот день</button><button class="btn btn-outline btn-block mt-8" id="btnBackToTrail">← Вернуться</button></div>`;
+        }
+
+        function renderPausedDay(dayNumber) {
+            const data=state.pausedDays[dayNumber]||{};
+            const hasRitual=data.selfCare||data.insightPaused||data.wordOfDay;
+            if(hasRitual){
+                const f=data.feelingsPaused?data.feelingsPaused.map(fid=>FEELINGS.find(ff=>ff.id===fid)).filter(Boolean):[];
+                return `<div class="card">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                        <button class="btn btn-icon btn-outline btn-sm" id="btnBackToTrail" style="width:40px;height:40px;font-size:16px;">←</button>
+                        <div><h3 style="margin:0;">🛌 День ${dayNumber} — у подножия</h3><p class="text-muted" style="font-size:12px;">${formatDate(dayNumber)}</p></div>
+                    </div>
+                    ${data.selfCare?`<p><strong>🌸 Забота о себе:</strong> ${escapeHtml(data.selfCare)}</p>`:''}
+                    ${f.length>0?`<p><strong>🎨 Чувства:</strong> ${f.map(ff=>ff.emoji+' '+ff.name).join(', ')}</p>`:''}
+                    ${data.insightPaused?`<p><strong>💡 Инсайт:</strong> ${escapeHtml(data.insightPaused)}</p>`:''}
+                    ${data.wordOfDay?`<p><strong>💫 Слово дня:</strong> ${escapeHtml(data.wordOfDay)}</p>`:''}
+                    <button class="btn btn-outline btn-sm btn-block mt-8" id="btnEditPaused">Дополнить</button>
+                    <button class="btn btn-secondary btn-block mt-8" id="btnBackToTrail2">← Вернуться</button>
+                </div>`;
+            }
+            return `<div class="card">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <button class="btn btn-icon btn-outline btn-sm" id="btnBackToTrail" style="width:40px;height:40px;font-size:16px;">←</button>
+                    <div><h3 style="margin:0;">🛌 День ${dayNumber} — у подножия</h3><p class="text-muted" style="font-size:12px;">${formatDate(dayNumber)}</p></div>
+                </div>
+                <p class="text-muted mb-12">Ты отдыхаешь. Это часть восхождения.<br>Иногда лучшие инсайты приходят в тишине.</p>
+                <label>🌸 Как ты позаботилась о себе сегодня?</label><textarea id="pausedSelfCare" placeholder="Горячая ванна, прогулка, книга..."></textarea>
+                <label>🎨 Какие чувства были сегодня?</label>
+                <div class="feelings-grid" id="pausedFeelingsGrid">${FEELINGS.map(f=>`<button class="feeling-chip" data-feeling="${f.id}">${f.emoji} ${f.name}</button>`).join('')}</div>
+                <label>💡 Инсайт дня (если есть):</label><textarea id="pausedInsight" placeholder="Что я поняла в тишине?"></textarea>
+                <label>💫 Одно слово дня:</label><input type="text" id="pausedWord" placeholder="Покой, радость, тишина..." maxlength="30">
+                <button class="btn btn-teal btn-block mt-12" id="btnSavePaused">Сохранить ритуал</button>
+                <button class="btn btn-outline btn-block mt-8" id="btnUnpauseFromCard">Сделать этот день шагом к Олимпу</button>
+            </div>`;
+        }
+
+        function renderReviewDay(dayNumber) {
+            const data=state.days[dayNumber];
+            if(!data){state.screen='trail';saveState(state);render();return'';}
+            return `<div class="card">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <button class="btn btn-icon btn-outline btn-sm" id="btnBackToTrail" style="width:40px;height:40px;font-size:16px;">←</button>
+                    <h3 style="margin:0;">Шаг ${dayNumber} — ${formatDate(dayNumber)}</h3>
+                </div>
+                ${renderCompletedDayContent(dayNumber,data)}
+            </div>`;
+        }
+
+        function renderCompletedDayContent(dayNumber,data) {
+            const scale=data.scale||0;
+            const f=data.feelings?data.feelings.map(fid=>{const ff=FEELINGS.find(x=>x.id===fid);const intensity=data.feelingIntensities?.[fid]||0;return{emoji:ff?.emoji||'',name:ff?.name||fid,intensity};}).filter(Boolean):[];
+            return `<div style="text-align:center;margin:12px 0;"><span style="font-size:40px;">⭐</span><p style="font-weight:700;color:var(--green);">Шаг сделан!</p><p>Приближение: <strong>${scale}/10</strong></p></div>
+                ${f.length>0?`<p><strong>Чувства:</strong> ${f.map(ff=>`${ff.emoji} ${ff.name} ${ff.intensity>0?'●'.repeat(ff.intensity):''}`).join(', ')}</p>`:''}
+                ${data.thought?`<p><strong>Мысль дня:</strong> ${escapeHtml(data.thought)}</p>`:''}
+                ${data.thoughtCheck?`<p><strong>Факт или интерпретация:</strong> ${escapeHtml(data.thoughtCheck)}</p>`:''}
+                ${data.thoughtAlt?`<p><strong>Другой взгляд:</strong> ${escapeHtml(data.thoughtAlt)}</p>`:''}
+                ${data.helped?`<p><strong>Что приблизило:</strong> ${escapeHtml(data.helped)}</p>`:''}
+                ${data.hindered?`<p><strong>Что отдалило:</strong> ${escapeHtml(data.hindered)}</p>`:''}
+                ${data.insight?`<p><strong>💡 Инсайт:</strong> ${escapeHtml(data.insight)}</p>`:''}
+                ${data.win?`<p><strong>🌟 Победа:</strong> ${escapeHtml(data.win)}</p>`:''}
+                ${data.tomorrowExperiment?`<p><strong>🔮 Что попробую завтра:</strong> ${escapeHtml(data.tomorrowExperiment)}</p>`:''}
+                ${data.selfSupport?`<p><strong>🤲 Самоподдержка:</strong> ${escapeHtml(data.selfSupport)}</p>`:''}
+                ${data.sessionNote?`<p><strong>💬 На сессию с Катей:</strong> ${escapeHtml(data.sessionNote)}</p>`:''}
+                <button class="btn btn-outline btn-sm btn-block mt-8" id="btnShareDay">Поделиться с Катей</button>
+                <button class="btn btn-secondary btn-block mt-8" id="btnBackToTrail2">← Вернуться</button>`;
+        }
+
+        function renderTodayForm(dayNumber) {
+            return `<div id="dailyForm">
+                <label>Насколько этот шаг приблизил тебя к Олимпу?</label><div class="scale-row" id="scaleRow">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="scale-btn" data-scale="${n}">${n}</button>`).join('')}</div>
+                <label>Какие чувства были сегодня?</label><div class="feelings-scroll"><div class="feelings-grid" id="feelingsGrid">${FEELINGS.map(f=>`<button class="feeling-chip" data-feeling="${f.id}" title="${f.tagline}">${f.emoji} ${f.name}<span class="intensity-indicator"></span></button>`).join('')}</div></div>
+                <div id="intensityPanel" class="hidden" style="margin-bottom:8px;"></div><div id="heavyFeelingContainer"></div>
+                <label>Какая мысль крутилась в голове?</label><textarea id="thoughtInput" placeholder="О чём ты думала сегодня?"></textarea>
+                <div id="thoughtCheck" class="hidden"></div>
+                <label>Что сработало, помогло, поддержало?</label><textarea id="helpedInput" placeholder="Что приблизило?"></textarea>
+                <label>Что мешало, сбивало, отнимало энергию?</label><textarea id="hinderedInput" placeholder="Что отдалило?"></textarea>
+                <label>💡 Инсайт дня</label><textarea id="insightInput" placeholder="Что я поняла сегодня?"></textarea>
+                <label>🌟 Маленькая победа</label><textarea id="winInput" placeholder="За что могу себя поблагодарить?"></textarea>
+                <label>🔮 Что я попробую завтра?</label><textarea id="tomorrowInput" placeholder="Микро-шаг, а не подвиг. Что-то за 15 минут."></textarea>
+                <p class="text-muted" style="font-size:11px;margin-top:-8px;">Маленький эксперимент. Проверю гипотезу.</p>
+                <label>🤲 Как я могу сама поддержать себя?</label><textarea id="selfSupportInput" placeholder="Что бы сказала подруге?"></textarea>
+                <label>💬 Что я хочу вынести на сессию с Катей?</label><textarea id="sessionNoteInput" placeholder="Вопрос или чувство для обсуждения"></textarea>
+                <button class="btn btn-primary mt-12" id="btnSaveDay">Сохранить шаг</button>
+            </div>`;
+        }
+
+        function renderReturnScreen() {
+            return `<div class="card" style="text-align:center;"><div style="font-size:48px;">${state.wandererEmoji||'👑'}</div><div class="return-banner"><h3>${state.wandererName||'Богиня'}, ты вернулась</h3><p class="text-muted">${getRandomPhrase('return')}</p></div><button class="btn btn-primary btn-block" id="btnReturnToday">Начать с сегодня</button><button class="btn btn-secondary btn-block" id="btnReturnTrail">Посмотреть путь</button></div>`;
+        }
+
+        function renderSummary() {
+            const progress=getProgress();
+            const allDays=Object.entries(state.days).map(([d,data])=>({day:parseInt(d),...data}));
+            const sortedDays=allDays.sort((a,b)=>a.day-b.day);
+            const scales=sortedDays.map(d=>d.scale||0);
+            const avgScale=scales.length>0?Math.round(scales.reduce((a,b)=>a+b,0)/scales.length):0;
+            const insights=sortedDays.filter(d=>d.insight).map(d=>d.insight).slice(-5);
+            const sessionNotes=sortedDays.filter(d=>d.sessionNote).map(d=>d.sessionNote);
+            const selfSupports=sortedDays.filter(d=>d.selfSupport).map(d=>d.selfSupport).slice(-5);
+            const experiments=sortedDays.filter(d=>d.tomorrowExperiment).map(d=>({exp:d.tomorrowExperiment,day:d.day}));
+            const shareCount=state.sharingHistory.length;
+            const pausedCount=Object.keys(state.pausedDays).filter(d=>!state.pausedDays[d]._planned).length;
+            const track=TRACKS.find(t=>t.id===state.selectedTrack);
+            const pausedRituals=Object.entries(state.pausedDays).filter(([d,data])=>data.selfCare||data.insightPaused).map(([d,data])=>({day:parseInt(d),...data}));
+            const allFeelings={};sortedDays.forEach(d=>{if(d.feelings)d.feelings.forEach(fid=>{allFeelings[fid]=(allFeelings[fid]||0)+1;});});
+            const topFeelings=Object.entries(allFeelings).sort((a,b)=>b[1]-a[1]).slice(0,8);
+            const isGrow=state.goalDepth==='grow';
+            const isLight=state.goalDepth==='light';
+
+            return `
+                <div class="card text-center"><div style="font-size:48px;">🏆</div><h2>${state.wandererName||'Богиня'}, ты на вершине</h2><p class="text-muted">Месяц завершён.</p></div>
+                <div class="card"><h3>📊 Итоги</h3><div class="summary-section">
+                    ${track?`<p><strong>Трек:</strong> ${track.icon} ${track.title}</p>`:''}<p>Шагов: ${progress.completed}/${TOTAL_DAYS}</p>
+                    ${pausedCount>0?`<p>🛌 Дней у подножия: ${pausedCount}</p>`:''}<p>Среднее приближение: ${avgScale}/10</p>
+                    ${scales.length>0?`<p>Старт→Вершина: ${scales[0]}/10→${scales[scales.length-1]}/10</p>`:''}
+                    ${shareCount>0?`<p>💌 Ты делилась с Катей ${shareCount} ${shareCount===1?'раз':shareCount<5?'раза':'раз'}</p>`:''}
+                </div>${scales.length>0?`<div class="mini-chart" style="height:80px;">${scales.map(s=>`<div class="mini-chart-bar" style="height:${s*10}%;" title="${s}/10"></div>`).join('')}</div>`:''}</div>
+                ${isGrow?renderGrowSummary():''}${isLight?renderLightSummary():''}
+                ${state.goalHistory.length>0?`<div class="card"><h3>🌿 Развилки</h3>${state.goalHistory.map(h=>`<div class="summary-section">${escapeHtml(h.goal)}</div>`).join('')}</div>`:''}
+                ${topFeelings.length>0?`<div class="card"><h3>🎨 Чувства за месяц</h3><div class="petals-container">${topFeelings.map(([fid,c])=>{const f=FEELINGS.find(ff=>ff.id===fid);return f?`<div class="petal-item"><div class="petal-circle" style="border-color:${f.color};background:${f.color}15;">${f.emoji}</div><span class="petal-label">${f.name}</span><span class="petal-count">${c}</span></div>`:'';}).join('')}</div></div>`:''}
+                ${experiments.length>0?`<div class="card"><h3>🔮 Эксперименты</h3>${experiments.map(e=>`<div class="summary-section"><strong>Шаг ${e.day}:</strong> ${escapeHtml(e.exp)}</div>`).join('')}</div>`:''}
+                ${insights.length>0?`<div class="card"><h3>💡 Инсайты</h3>${insights.map(i=>`<div class="summary-section">${escapeHtml(i)}</div>`).join('')}</div>`:''}
+                ${Object.keys(state.weeklyIdentity).length>0?`<div class="card"><h3>🪞 Кто я сейчас</h3>${Object.entries(state.weeklyIdentity).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([w,t])=>`<div class="summary-section"><strong>Нед.${w}:</strong> ${escapeHtml(t)}</div>`).join('')}</div>`:''}
+                ${selfSupports.length>0?`<div class="card"><h3>🤲 Самоподдержка</h3>${selfSupports.map(s=>`<div class="summary-section">${escapeHtml(s)}</div>`).join('')}</div>`:''}
+                ${sessionNotes.length>0?`<div class="card"><h3>💬 На сессию с Катей</h3>${sessionNotes.map(s=>`<div class="summary-section">${escapeHtml(s)}</div>`).join('')}</div>`:''}
+                ${pausedRituals.length>0?`<div class="card"><h3>🌸 Ритуалы у подножия</h3>${pausedRituals.map(r=>`<div class="summary-section"><strong>День ${r.day}:</strong> ${escapeHtml(r.selfCare||r.insightPaused||r.wordOfDay||'')}</div>`).join('')}</div>`:''}
+                ${state.gratitudeGarden.length>0?renderGardenBlock():''}
+                <div class="card text-center"><button class="btn btn-primary btn-block" id="btnShareSummary">Поделиться с Катей</button><button class="btn btn-secondary btn-block" id="btnSavePDF">Сохранить как PDF</button></div>
+                <div class="card text-center"><h3>Что дальше, богиня?</h3><button class="btn btn-gold btn-block" id="btnNewCycle">Новое восхождение</button><button class="btn btn-secondary btn-block" id="btnContinueCycle">Продолжить этот путь</button><button class="btn btn-outline btn-block" id="btnBackToTrail">← Вернуться</button></div>
+            `;
+        }
+
+        function renderGrowSummary() {
+            const gd=state.growData;
+            return `<div class="card"><h3>🏛️ Мой GROW-компас на старте</h3>
+                <div class="summary-section"><h4>G — Цель</h4><p>${escapeHtml(gd.g1||'—')}</p><p style="font-size:11px;color:var(--text-light);">Признаки: ${escapeHtml(gd.g2||'—')}</p></div>
+                <div class="summary-section"><h4>R — Реальность</h4><p>Шкала: ${gd.r2||'—'}/10</p><p style="font-size:11px;color:var(--text-light);">Ресурсы: ${escapeHtml(gd.r4||'—')}</p></div>
+                <div class="summary-section"><h4>O — Варианты</h4><p style="font-size:11px;">${escapeHtml(gd.o1||'—')}</p></div>
+                <div class="summary-section"><h4>W — План</h4><p>${escapeHtml(gd.w1||'—')}</p><p style="font-size:11px;color:var(--text-light);">Готовность: ${gd.w3||'—'}/10</p></div>
+            </div>`;
+        }
+
+        function renderLightSummary() {
+            const d=state.lightData;
+            return `<div class="card"><h3>🌱 Моя цель на старте</h3>
+                <div class="summary-section"><p><strong>Цель:</strong> ${escapeHtml(d.goal||'—')}</p><p style="font-size:11px;color:var(--text-light);">Признаки: ${escapeHtml(d.signs||'—')}</p><p style="font-size:11px;color:var(--text-light);">Шкала: ${d.scale||'—'}/10</p></div>
+            </div>`;
+        }
+
+        function attachListeners() {
+            const btnStart=document.getElementById('btnStartWanderer');
+            if(btnStart)btnStart.addEventListener('click',()=>{const n=document.getElementById('wandererName');state.wandererName=n.value.trim()||'Богиня';state.screen='choose_tempo';saveState(state);render();});
+
+            const emojiPicker=document.getElementById('emojiPicker');
+            if(emojiPicker)emojiPicker.addEventListener('click',(e)=>{const b=e.target.closest('[data-emoji]');if(b){const ni=document.getElementById('wandererName');if(ni)state.wandererName=ni.value.trim()||state.wandererName;state.wandererEmoji=b.dataset.emoji;saveState(state);render();}});
+
+            const tempoOptions=document.getElementById('tempoOptions');
+            if(tempoOptions)tempoOptions.addEventListener('click',(e)=>{const c=e.target.closest('[data-tempo]');if(c){state.tempo=c.dataset.tempo;document.querySelectorAll('.tempo-card').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');document.getElementById('btnConfirmTempo').classList.remove('hidden');saveState(state);}});
+            const btnConfirmTempo=document.getElementById('btnConfirmTempo');
+            if(btnConfirmTempo)btnConfirmTempo.addEventListener('click',()=>{state.screen='set_track';state.startDate=new Date().toISOString().split('T')[0];saveState(state);render();});
+
+            const trackOptions=document.getElementById('trackOptions');
+            if(trackOptions)trackOptions.addEventListener('click',(e)=>{const c=e.target.closest('[data-track]');if(c){state.selectedTrack=c.dataset.track;document.querySelectorAll('.track-card').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');saveState(state);}});
+            const btnSaveTrack=document.getElementById('btnSaveTrack');
+            if(btnSaveTrack)btnSaveTrack.addEventListener('click',()=>{if(state.selectedTrack){state.screen='choose_depth';saveState(state);render();}});
+
+            // Выбор глубины
+            const depthOptions=document.querySelectorAll('[data-depth]');
+            depthOptions.forEach(b=>b.addEventListener('click',()=>{state.goalDepth=b.dataset.depth;state.screen=b.dataset.depth==='grow'?'grow_session':'set_goal_light';saveState(state);render();}));
+
+            // Лайт
+            const btnSwitchToGrow=document.getElementById('btnSwitchToGrow');
+            if(btnSwitchToGrow)btnSwitchToGrow.addEventListener('click',()=>{saveLightData();state.goalDepth='grow';state.screen='grow_session';saveState(state);render();});
+            const btnSaveLight=document.getElementById('btnSaveLight');
+            if(btnSaveLight)btnSaveLight.addEventListener('click',()=>{saveLightData();state.goal=state.lightData.goal;state.goalWhy=state.lightData.why;state.screen='set_rhythm';saveState(state);render();});
+            const lgScaleRow=document.getElementById('lgScaleRow');
+            if(lgScaleRow)lgScaleRow.addEventListener('click',(e)=>{const b=e.target.closest('[data-scale]');if(b){document.querySelectorAll('#lgScaleRow .scale-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.lightData.scale=parseInt(b.dataset.scale);saveState(state);}});
+
+            // GROW
+            const btnSwitchToLight=document.getElementById('btnSwitchToLight');
+            if(btnSwitchToLight)btnSwitchToLight.addEventListener('click',()=>{saveGrowData();state.goalDepth='light';state.screen='set_goal_light';saveState(state);render();});
+            document.querySelectorAll('#btnGrowNext').forEach(b=>b.addEventListener('click',()=>{saveGrowData();state.growData.step=(state.growData.step||1)+1;saveState(state);render();}));
+            document.querySelectorAll('#btnGrowBack').forEach(b=>b.addEventListener('click',()=>{saveGrowData();state.growData.step=Math.max(1,(state.growData.step||2)-1);saveState(state);render();}));
+            document.querySelectorAll('#btnGrowSaveExit').forEach(b=>b.addEventListener('click',()=>{saveGrowData();state.screen='trail';state.startDate=state.startDate||new Date().toISOString().split('T')[0];saveState(state);render();}));
+            const btnGrowFinish=document.getElementById('btnGrowFinish');
+            if(btnGrowFinish)btnGrowFinish.addEventListener('click',()=>{saveGrowData();state.goal=state.growData.g1;state.goalWhy=state.growData.g4;state.screen='set_rhythm';saveState(state);render();});
+            const gScaleRow=document.getElementById('gScaleRow');
+            if(gScaleRow)gScaleRow.addEventListener('click',(e)=>{const b=e.target.closest('[data-scale]');if(b){document.querySelectorAll('#gScaleRow .scale-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.growData.r2=parseInt(b.dataset.scale);saveState(state);}});
+            const gScaleRowW=document.getElementById('gScaleRowW');
+            if(gScaleRowW)gScaleRowW.addEventListener('click',(e)=>{const b=e.target.closest('[data-scale]');if(b){document.querySelectorAll('#gScaleRowW .scale-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.growData.w3=parseInt(b.dataset.scale);saveState(state);}});
+
+            // Ритм
+            const rhythmOptions=document.getElementById('rhythmOptions');
+            if(rhythmOptions)rhythmOptions.addEventListener('click',(e)=>{const c=e.target.closest('[data-rhythm]');if(c){state.rhythmDays=parseInt(c.dataset.rhythm);document.querySelectorAll('.rhythm-card').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');saveState(state);}});
+            const btnSaveRhythm=document.getElementById('btnSaveRhythm');
+            if(btnSaveRhythm)btnSaveRhythm.addEventListener('click',()=>{state.screen=state.tempo==='deep'?'set_values':'trail';state.startDate=state.startDate||new Date().toISOString().split('T')[0];saveState(state);render();});
+
+            // Ценности
+            const valuesGrid=document.getElementById('valuesGrid');
+            if(valuesGrid)valuesGrid.addEventListener('click',(e)=>{const chip=e.target.closest('[data-value]');if(chip){const v=chip.dataset.value;if(state.values.includes(v))state.values=state.values.filter(x=>x!==v);else if(state.values.length<3)state.values.push(v);saveState(state);render();}});
+            const btnSaveValues=document.getElementById('btnSaveValues');
+            if(btnSaveValues)btnSaveValues.addEventListener('click',()=>{if(state.values.length===3){state.screen='trail';state.startDate=state.startDate||new Date().toISOString().split('T')[0];saveState(state);render();}});
+
+            // Тропа
+            const stepsGrid=document.getElementById('stepsGrid');
+            if(stepsGrid)stepsGrid.addEventListener('click',(e)=>{const cell=e.target.closest('[data-day]');if(cell&&!cell.disabled){const day=parseInt(cell.dataset.day);if(state.days[day]){state.screen='review_day';}else if(state.pausedDays[day]){state.screen='paused_day';}else if(day<getTodayDayNumber()){state.screen='missed_day';}else{state.screen='daily_card';}state.currentViewDay=day;saveState(state);render();}});
+            const btnStartJourney=document.getElementById('btnStartJourney');
+            if(btnStartJourney)btnStartJourney.addEventListener('click',()=>{state.startDate=new Date().toISOString().split('T')[0];state.screen='daily_card';state.currentViewDay=1;saveState(state);render();});
+            const btnStartToday=document.getElementById('btnStartToday');
+            if(btnStartToday)btnStartToday.addEventListener('click',()=>{state.screen='daily_card';state.currentViewDay=getTodayDayNumber();saveState(state);render();});
+            const btnPauseToday=document.getElementById('btnPauseToday');
+            if(btnPauseToday)btnPauseToday.addEventListener('click',()=>{const today=getTodayDayNumber();state.pausedDays[today]={timestamp:new Date().toISOString()};state.screen='trail';saveState(state);render();});
+            const btnOpenPaused=document.getElementById('btnOpenPaused');
+            if(btnOpenPaused)btnOpenPaused.addEventListener('click',()=>{state.screen='paused_day';state.currentViewDay=getTodayDayNumber();saveState(state);render();});
+            const btnUnpause=document.getElementById('btnUnpause');
+            if(btnUnpause)btnUnpause.addEventListener('click',()=>{const today=getTodayDayNumber();delete state.pausedDays[today];state.screen='daily_card';state.currentViewDay=today;saveState(state);render();});
+            const btnReviewToday=document.getElementById('btnReviewToday');
+            if(btnReviewToday)btnReviewToday.addEventListener('click',()=>{state.screen='review_day';state.currentViewDay=getTodayDayNumber();saveState(state);render();});
+            const btnChangeGoal=document.getElementById('btnChangeGoal');
+            if(btnChangeGoal)btnChangeGoal.addEventListener('click',()=>{state.screen='choose_depth';saveState(state);render();});
+            document.querySelectorAll('[id^="btnBackToTrail"]').forEach(b=>b.addEventListener('click',()=>{state.screen='trail';saveState(state);render();}));
+            const btnLiveMissed=document.getElementById('btnLiveMissed');
+            if(btnLiveMissed)btnLiveMissed.addEventListener('click',()=>{state.screen='daily_card';saveState(state);render();});
+
+            // Карточка выходного
+            const btnSavePaused=document.getElementById('btnSavePaused');
+            if(btnSavePaused)btnSavePaused.addEventListener('click',()=>{const dn=state.currentViewDay||getTodayDayNumber();const sfs=[...document.querySelectorAll('#pausedFeelingsGrid .feeling-chip.selected')].map(c=>c.dataset.feeling);state.pausedDays[dn]={selfCare:document.getElementById('pausedSelfCare')?.value||'',feelingsPaused:sfs,insightPaused:document.getElementById('pausedInsight')?.value||'',wordOfDay:document.getElementById('pausedWord')?.value||'',timestamp:new Date().toISOString()};state.screen='trail';saveState(state);render();});
+            const btnEditPaused=document.getElementById('btnEditPaused');
+            if(btnEditPaused)btnEditPaused.addEventListener('click',()=>{state.screen='paused_day';saveState(state);render();});
+            const btnUnpauseFromCard=document.getElementById('btnUnpauseFromCard');
+            if(btnUnpauseFromCard)btnUnpauseFromCard.addEventListener('click',()=>{const dn=state.currentViewDay;delete state.pausedDays[dn];state.screen='daily_card';saveState(state);render();});
+            const pausedFeelingsGrid=document.getElementById('pausedFeelingsGrid');
+            if(pausedFeelingsGrid)pausedFeelingsGrid.addEventListener('click',(e)=>{const chip=e.target.closest('[data-feeling]');if(chip)chip.classList.toggle('selected');});
+
+            // Ежедневная карточка
+            const scaleRow=document.getElementById('scaleRow');
+            if(scaleRow)scaleRow.addEventListener('click',(e)=>{const btn=e.target.closest('[data-scale]');if(btn){document.querySelectorAll('#scaleRow .scale-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tc=document.getElementById('thoughtCheck');if(parseInt(btn.dataset.scale)<=4&&tc){tc.classList.remove('hidden');tc.innerHTML=`<div class="container-box mt-8"><p style="font-size:13px;">Когда приближение небольшое — часто включаются автоматические мысли.</p><label>Это факт или интерпретация?</label><textarea id="thoughtCheckInput" placeholder="Факт можно доказать."></textarea><label>Что бы ты сказала подруге?</label><textarea id="thoughtAltInput" placeholder="Альтернативный взгляд..."></textarea></div>`;}else if(tc)tc.classList.add('hidden');}});
+            const feelingsGrid=document.getElementById('feelingsGrid');
+            if(feelingsGrid)feelingsGrid.addEventListener('click',(e)=>{const chip=e.target.closest('[data-feeling]');if(chip){chip.classList.toggle('selected');updateHeavyContainer();updateIntensityPanel();}});
+            const btnSaveDay=document.getElementById('btnSaveDay');
+            if(btnSaveDay)btnSaveDay.addEventListener('click',()=>{const dn=state.currentViewDay||getTodayDayNumber();const sb=document.querySelector('#scaleRow .scale-btn.active');const scale=sb?parseInt(sb.dataset.scale):5;const sfs=[...document.querySelectorAll('#feelingsGrid .feeling-chip.selected')].map(c=>c.dataset.feeling);const intensities={};document.querySelectorAll('#intensityPanel .intensity-dot.active').forEach(dot=>{intensities[dot.dataset.feeling]=parseInt(dot.dataset.intensity);});state.days[dn]={scale,feelings:sfs,feelingIntensities:intensities,thought:document.getElementById('thoughtInput')?.value||'',thoughtCheck:document.getElementById('thoughtCheckInput')?.value||'',thoughtAlt:document.getElementById('thoughtAltInput')?.value||'',helped:document.getElementById('helpedInput')?.value||'',hindered:document.getElementById('hinderedInput')?.value||'',insight:document.getElementById('insightInput')?.value||'',win:document.getElementById('winInput')?.value||'',tomorrowExperiment:document.getElementById('tomorrowInput')?.value||'',selfSupport:document.getElementById('selfSupportInput')?.value||'',sessionNote:document.getElementById('sessionNoteInput')?.value||'',timestamp:new Date().toISOString()};delete state.pausedDays[dn];state.screen=dn>=TOTAL_DAYS?'completed':'trail';state.lastActiveDate=new Date().toISOString().split('T')[0];saveState(state);render();});
+
+            // Блоки тропы
+            const btnSaveIdentityTrail=document.getElementById('btnSaveIdentityTrail');
+            if(btnSaveIdentityTrail)btnSaveIdentityTrail.addEventListener('click',()=>{const inp=document.getElementById('identityInputTrail');if(inp&&inp.value.trim()){state.weeklyIdentity[getCurrentWeekNumber()]=inp.value.trim();saveState(state);render();}});
+            const btnSaveGratitudeTrail=document.getElementById('btnSaveGratitudeTrail');
+            if(btnSaveGratitudeTrail)btnSaveGratitudeTrail.addEventListener('click',()=>{const inp=document.getElementById('gratitudeInputTrail');if(inp&&inp.value.trim()){state.gratitudeGarden.push({dayNumber:getTodayDayNumber(),text:inp.value.trim()});saveState(state);render();}});
+            const btnMaelstromOk=document.getElementById('btnMaelstromOk');
+            if(btnMaelstromOk)btnMaelstromOk.addEventListener('click',()=>{state._maelstromShown=true;saveState(state);render();});
+            const btnAddSelfSupport=document.getElementById('btnAddSelfSupport');
+            if(btnAddSelfSupport)btnAddSelfSupport.addEventListener('click',()=>{state.screen='daily_card';state.currentViewDay=getTodayDayNumber();saveState(state);render();});
+
+            // Возврат, шаринг, PDF
+            const btnReturnToday=document.getElementById('btnReturnToday');
+            if(btnReturnToday)btnReturnToday.addEventListener('click',()=>{state.screen='trail';saveState(state);render();});
+            const btnReturnTrail=document.getElementById('btnReturnTrail');
+            if(btnReturnTrail)btnReturnTrail.addEventListener('click',()=>{state.screen='trail';saveState(state);render();});
+            document.querySelectorAll('#btnShareDay, #btnShareTodayInline').forEach(b=>b.addEventListener('click',()=>{const dn=state.currentViewDay||getTodayDayNumber();const data=state.days[dn];if(data){shareToTelegram(buildDayShareText(dn,data));state.sharingHistory.push({type:'day',date:new Date().toISOString()});saveState(state);showToast('Отправлено Кате 🤍');}}));
+            const btnShareWeek=document.getElementById('btnShareWeek');
+            if(btnShareWeek)btnShareWeek.addEventListener('click',()=>{shareToTelegram(buildWeekShareText());state.sharingHistory.push({type:'week',date:new Date().toISOString()});saveState(state);showToast('Неделя отправлена 🤍');});
+            const btnShareSummary=document.getElementById('btnShareSummary');
+            if(btnShareSummary)btnShareSummary.addEventListener('click',()=>{shareToTelegram(buildSummaryShareText());state.sharingHistory.push({type:'summary',date:new Date().toISOString()});saveState(state);showToast('Итоги отправлены 🤍');});
+            const btnSavePDF=document.getElementById('btnSavePDF');
+            if(btnSavePDF)btnSavePDF.addEventListener('click',saveAsPDF);
+            const btnNewCycle=document.getElementById('btnNewCycle');
+            if(btnNewCycle)btnNewCycle.addEventListener('click',()=>{state.completedCycles++;state=loadState();state.screen='set_track';state.selectedTrack='';state.goal='';state.goalWhy='';state.goalDepth='';state.startDate=null;state.days={};state.pausedDays={};state.weeklyIdentity={};state.gratitudeGarden=[];state.goalHistory=[];state._maelstromShown=false;state.growData=getDefaultState().growData;state.lightData=getDefaultState().lightData;saveState(state);render();});
+            const btnContinueCycle=document.getElementById('btnContinueCycle');
+            if(btnContinueCycle)btnContinueCycle.addEventListener('click',()=>{state.completedCycles++;state.screen='trail';state.startDate=new Date().toISOString().split('T')[0];state.days={};state.pausedDays={};state.weeklyIdentity={};state.gratitudeGarden=[];state._maelstromShown=false;saveState(state);render();});
+        }
+
+        function saveLightData() {
+            state.lightData={
+                goal:document.getElementById('lgGoal')?.value||'',signs:document.getElementById('lgSigns')?.value||'',
+                ownGoal:document.getElementById('lgOwnGoal')?.value||'',why:document.getElementById('lgWhy')?.value||'',
+                scale:state.lightData.scale||5,resources:document.getElementById('lgResources')?.value||''
+            };
+        }
+        function saveGrowData() {
+            const gd=state.growData;
+            if(gd.step===1){gd.g1=document.getElementById('gG1')?.value||'';gd.g2=document.getElementById('gG2')?.value||'';gd.g3=document.getElementById('gG3')?.value||'';gd.g4=document.getElementById('gG4')?.value||'';}
+            else if(gd.step===2){gd.r1=document.getElementById('gR1')?.value||'';gd.r3=document.getElementById('gR3')?.value||'';gd.r4=document.getElementById('gR4')?.value||'';gd.r5=document.getElementById('gR5')?.value||'';}
+            else if(gd.step===3){gd.o1=document.getElementById('gO1')?.value||'';gd.o2=document.getElementById('gO2')?.value||'';gd.o3=document.getElementById('gO3')?.value||'';}
+            else if(gd.step===4){gd.w1=document.getElementById('gW1')?.value||'';gd.w2=document.getElementById('gW2')?.value||'';gd.w4=document.getElementById('gW4')?.value||'';gd.w5=document.getElementById('gW5')?.value||'';}
+            saveState(state);
+        }
+
+        function updateIntensityPanel() {
+            const panel=document.getElementById('intensityPanel');if(!panel)return;
+            const selected=[...document.querySelectorAll('#feelingsGrid .feeling-chip.selected')];
+            if(selected.length===0){panel.classList.add('hidden');return;}panel.classList.remove('hidden');
+            const fid=selected[selected.length-1].dataset.feeling;const f=FEELINGS.find(ff=>ff.id===fid);if(!f)return;
+            panel.innerHTML=`<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">Насколько сильно ${f.emoji} ${f.name}?</div><div class="intensity-row">${[1,2,3,4,5].map(i=>`<div class="intensity-dot" data-feeling="${fid}" data-intensity="${i}"></div>`).join('')}<span class="intensity-label" id="intensityLabel"></span></div>`;
+            panel.querySelectorAll('.intensity-dot').forEach(dot=>{dot.addEventListener('click',()=>{panel.querySelectorAll('.intensity-dot').forEach(d=>d.classList.remove('active'));dot.classList.add('active');document.getElementById('intensityLabel').textContent=dot.dataset.intensity==='1'?'еле-еле':dot.dataset.intensity==='2'?'слегка':dot.dataset.intensity==='3'?'заметно':dot.dataset.intensity==='4'?'сильно':'очень сильно';});});
+        }
+        function updateHeavyContainer(){const c=document.getElementById('heavyFeelingContainer');if(!c)return;const sfs=[...document.querySelectorAll('#feelingsGrid .feeling-chip.selected')].map(x=>x.dataset.feeling);const hs=sfs.filter(fid=>HEAVY_FEELINGS[fid]);if(hs.length>0){const hf=HEAVY_FEELINGS[hs[0]];c.innerHTML=`<div class="container-box"><h4>${hf.title}</h4><p>${hf.body}</p><p><strong>${hf.truth}</strong></p><p class="note">${hf.note}</p><a href="${TG_KATYA}" target="_blank" class="btn btn-accent btn-sm mt-8">Мне нужно больше поддержки</a></div>`;}else c.innerHTML='';}
+
+        function buildDayShareText(dn,data){
+            const f=data.feelings?data.feelings.map(fid=>{const ff=FEELINGS.find(x=>x.id===fid);const intensity=data.feelingIntensities?.[fid]||0;return ff?`${ff.emoji} ${ff.name}${intensity>0?' '+'●'.repeat(intensity):''}`:fid;}).filter(Boolean):[];
+            let t=`🏛️ ${state.wandererName||'Богиня'}, ${formatDate(dn)}\n\nПриближение: ${data.scale}/10\n`;if(f.length>0)t+=`Чувства: ${f.join(', ')}\n`;if(data.insight)t+=`\n💡 Инсайт: ${data.insight}\n`;if(data.tomorrowExperiment)t+=`\n🔮 Попробую: ${data.tomorrowExperiment}\n`;if(data.sessionNote)t+=`\n💬 На сессию: ${data.sessionNote}\n`;t+=`\n— Мой Олимп`;return t;
+        }
+        function buildWeekShareText(){
+            const today=getTodayDayNumber();const ws=Math.max(1,today-6);const wd=Object.entries(state.days).filter(([d])=>parseInt(d)>=ws&&parseInt(d)<=today).map(([d,data])=>({day:parseInt(d),...data}));
+            let t=`📅 ${state.wandererName||'Богиня'}, неделя (шаги ${ws}–${today})\n\n`;wd.forEach(d=>{t+=`Шаг ${d.day}: ${d.scale}/10`;if(d.insight)t+=` — ${d.insight.substring(0,60)}`;t+='\n';});t+=`\n— Мой Олимп`;return t;
+        }
+        function buildSummaryShareText(){
+            const p=getProgress();const allDays=Object.entries(state.days).map(([d,data])=>({day:parseInt(d),...data}));const sc=allDays.map(d=>d.scale||0);const avg=sc.length>0?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):0;
+            let t=`🏆 ${state.wandererName||'Богиня'}, восхождение завершено\n\nШагов: ${p.completed}/${TOTAL_DAYS}\nСреднее: ${avg}/10\n`;const li=Object.entries(state.weeklyIdentity).sort((a,b)=>parseInt(b[0])-parseInt(a[0]))[0];if(li)t+=`\n🪞 Кто я сейчас: ${li[1]}\n`;t+=`\n— Мой Олимп`;return t;
+        }
+        function shareToTelegram(text){window.open(`https://t.me/ginger_coach4you?text=${encodeURIComponent(text)}`,'_blank');}
+        function saveAsPDF(){
+            const p=getProgress();const allDays=Object.entries(state.days).map(([d,data])=>({day:parseInt(d),...data}));const sc=allDays.map(d=>d.scale||0);
+            const insights=allDays.filter(d=>d.insight).map(d=>d.insight);const sn=allDays.filter(d=>d.sessionNote).map(d=>d.sessionNote);
+            const ss=allDays.filter(d=>d.selfSupport).map(d=>d.selfSupport);const exp=allDays.filter(d=>d.tomorrowExperiment).map(d=>d.tomorrowExperiment);
+            let h=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Мой Олимп — Итоги</title><style>body{font-family:-apple-system,sans-serif;color:#3a3a3a;padding:24px;max-width:520px;margin:0 auto;line-height:1.6;}h1{color:#4a7c96;text-align:center;}h2{color:#4a7c96;margin-top:16px;border-bottom:1px solid #e8e4dd;padding-bottom:4px;}.s{background:#fafaf9;padding:10px;border-radius:8px;margin:8px 0;}</style></head><body>
+            <h1>🏛️ ${state.wandererEmoji||'👑'} ${state.wandererName||'Богиня'} — восхождение</h1><p style="text-align:center;color:#7a7a7a;">${escapeHtml(state.goal||'')}</p>
+            <h2>📊 Итоги</h2><p>Шагов: ${p.completed}/${TOTAL_DAYS}</p>${sc.length>0?`<p>Старт: ${sc[0]}/10 → Вершина: ${sc[sc.length-1]}/10</p>`:''}
+            ${insights.length>0?`<h2>💡 Инсайты</h2>${insights.map(i=>`<div class="s">${escapeHtml(i)}</div>`).join('')}`:''}
+            ${exp.length>0?`<h2>🔮 Эксперименты</h2>${exp.map(e=>`<div class="s">${escapeHtml(e)}</div>`).join('')}`:''}
+            ${ss.length>0?`<h2>🤲 Самоподдержка</h2>${ss.map(s=>`<div class="s">${escapeHtml(s)}</div>`).join('')}`:''}
+            ${sn.length>0?`<h2>💬 На сессию с Катей</h2>${sn.map(s=>`<div class="s">${escapeHtml(s)}</div>`).join('')}`:''}
+            <p style="text-align:center;margin-top:20px;color:#7a7a7a;">🏛️ Мой Олимп</p></body></html>`;
+            const pw=window.open('','_blank');pw.document.write(h);pw.document.close();setTimeout(()=>pw.print(),500);
+        }
+
+        if(state.startDate&&state.screen!=='completed'&&getTodayDayNumber()>TOTAL_DAYS)state.screen='completed';
+        render();
+    </script>
+</body>
+</html>
